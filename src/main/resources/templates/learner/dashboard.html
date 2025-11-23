@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Learner Dashboard</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f0f2f5;
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #333;
+            margin-top: 0;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            background-color: #1a73e8;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background-color: #1557b0;
+        }
+
+        .btn-secondary {
+            background-color: #5f6368;
+        }
+
+        .btn-secondary:hover {
+            background-color: #4b4e52;
+        }
+
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Welcome, <span th:text="${username}">Learner</span></h1>
+        <div>
+            <a th:href="@{/learner/courses}" class="btn">Browse Courses</a>
+            <form th:action="@{/logout}" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-secondary">Logout</button>
+            </form>
+        </div>
+    </div>
+
+    <h2>My Subscriptions</h2>
+    <div class="course-grid">
+        <div th:each="sub : ${subscriptions}" class="card">
+            <h3 th:text="${sub.course.title}">Course Title</h3>
+            <p th:text="${sub.course.description}">Description</p>
+            <p><strong>Instructor:</strong> <span th:text="${sub.course.instructor.username}">Instructor</span></p>
+            <a th:href="@{'/learner/course/' + ${sub.course.id}}" class="btn">Continue Learning</a>
+        </div>
+    </div>
+
+    <div th:if="${#lists.isEmpty(subscriptions)}">
+        <p>You haven't subscribed to any courses yet. <a th:href="@{/learner/courses}">Browse available courses</a>.</p>
+    </div>
+</body>
+
+</html>

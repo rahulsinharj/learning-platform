@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Available Courses</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f0f2f5;
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #333;
+            margin-top: 0;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background-color: #218838;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 1rem;
+            color: #1a73e8;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Available Courses</h1>
+        <a th:href="@{/learner/dashboard}" class="back-link">Back to Dashboard</a>
+    </div>
+
+    <div th:each="course : ${courses}" class="card">
+        <h3 th:text="${course.title}">Course Title</h3>
+        <p th:text="${course.description}">Description</p>
+        <p><strong>Instructor:</strong> <span th:text="${course.instructor.username}">Instructor</span></p>
+
+        <form th:action="@{'/learner/course/' + ${course.id} + '/subscribe'}" method="post">
+            <button type="submit" class="btn">Subscribe</button>
+        </form>
+    </div>
+
+    <div th:if="${#lists.isEmpty(courses)}">
+        <p>No new courses available to subscribe.</p>
+    </div>
+</body>
+
+</html>

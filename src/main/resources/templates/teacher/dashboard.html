@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Teacher Dashboard</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f0f2f5;
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #333;
+            margin-top: 0;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            background-color: #1a73e8;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background-color: #1557b0;
+        }
+
+        .btn-secondary {
+            background-color: #5f6368;
+        }
+
+        .btn-secondary:hover {
+            background-color: #4b4e52;
+        }
+
+        .course-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .module-list {
+            margin-top: 1rem;
+            padding-left: 1rem;
+            border-left: 2px solid #eee;
+        }
+
+        .logout {
+            color: #c81e1e;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Welcome, <span th:text="${username}">Teacher</span></h1>
+        <div>
+            <a th:href="@{/teacher/course/create}" class="btn">Create New Course</a>
+            <form th:action="@{/logout}" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-secondary">Logout</button>
+            </form>
+        </div>
+    </div>
+
+    <h2>Your Courses</h2>
+    <div class="course-list">
+        <div th:each="course : ${courses}" class="card">
+            <h3 th:text="${course.title}">Course Title</h3>
+            <p th:text="${course.description}">Description</p>
+
+            <h4>Modules</h4>
+            <div class="module-list">
+                <div th:each="module : ${course.modules}">
+                    <p><strong>Title:</strong> <span th:text="${module.title}">Module Title</span></p>
+                </div>
+                <p th:if="${#lists.isEmpty(course.modules)}">No modules yet.</p>
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <a th:href="@{'/teacher/course/' + ${course.id} + '/module/add'}" class="btn">Add Module</a>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${#lists.isEmpty(courses)}">
+        <p>You haven't created any courses yet.</p>
+    </div>
+</body>
+
+</html>

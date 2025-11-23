@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title th:text="${course.title}">Course View</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f0f2f5;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 1rem;
+        }
+
+        .module {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .module h3 {
+            color: #1a73e8;
+        }
+
+        .content {
+            background: #f9f9f9;
+            padding: 1rem;
+            border-radius: 4px;
+            white-space: pre-wrap;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: #1a73e8;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <a th:href="@{/learner/dashboard}" class="back-link">&larr; Back to Dashboard</a>
+        <h1 th:text="${course.title}">Course Title</h1>
+        <p th:text="${course.description}">Description</p>
+
+        <h2>Modules</h2>
+        <div th:each="module : ${course.modules}" class="module">
+            <h3 th:text="${module.title}">Module Title</h3>
+            <div class="content" th:text="${module.content}">Content</div>
+        </div>
+
+        <div th:if="${#lists.isEmpty(course.modules)}">
+            <p>No content has been added to this course yet.</p>
+        </div>
+    </div>
+</body>
+
+</html>
